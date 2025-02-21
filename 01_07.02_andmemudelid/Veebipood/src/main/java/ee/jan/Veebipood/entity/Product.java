@@ -1,9 +1,6 @@
 package ee.jan.Veebipood.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +36,17 @@ public class Product {
     private String image; // .jpg
     private boolean active;
 
+    // PArem pool tähistab kas on List<> või ainsus
+    // Vaask pool tähistab
+
+    //@ManyToMany
+    //ManyToOne
+    //OneToMany
+    //OneToOne --> User <-> Contact
+
+
+    @ManyToOne // ühel kategoorial võib olla mitu toodet.
+    private Category category;
     //
 }
 
