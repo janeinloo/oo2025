@@ -18,6 +18,6 @@ public class Result {
     private String event; //spordiala
     private double score; // Antud ala tulemus nt 100m 9,80
     private int points; // Ala järgi arvutatud kriteeriumiga arvutatud ala tulemus.
-    @ManyToOne // Ühel sportlasel
+    @ManyToOne // Ühel sportlasel on mitu ala
     private Athlete athlete;
 }

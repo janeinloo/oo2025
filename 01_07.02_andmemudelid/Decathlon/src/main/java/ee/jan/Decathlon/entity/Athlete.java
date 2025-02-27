@@ -20,6 +20,6 @@ public class Athlete {
     private long id;
     private String name;
     private String country;
-    private int age;
+    private Integer age;
     private int totalPoints; //peaks olema vist iga võistleja enda kogu tulemus olemas?
 }
