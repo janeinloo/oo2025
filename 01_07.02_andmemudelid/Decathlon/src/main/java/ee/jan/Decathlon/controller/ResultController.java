@@ -27,11 +27,13 @@ public class ResultController {
         return decathlonService.calculatePoints(event, performance);
     }
 
+    //Tulemuste saamine
     @GetMapping("results")
     public List<Result> getResults() {
         return resultRepository.findAll();
     }
 
+    //Tulemuste sisestamiseks
     @PostMapping("results")
     public List<Result> addResult(@RequestBody Result result) {
         if (result.getEvent() == null || result.getEvent().isEmpty()) {
@@ -65,6 +67,7 @@ public class ResultController {
         }
     }
 
+    //Tulemuste editimiseks, aga läks katki
     @PutMapping("results")
     public List<Result> editResult(@RequestBody Result result) {
         if (result.getEvent() == null || result.getEvent().isEmpty()) {
@@ -81,6 +84,7 @@ public class ResultController {
     }
 
 
+    //Tulemuste kustutamiseks
     @DeleteMapping("results/{id}")
     public List<Result> deleteResult(@PathVariable Long id) {
         resultRepository.deleteById(id);
