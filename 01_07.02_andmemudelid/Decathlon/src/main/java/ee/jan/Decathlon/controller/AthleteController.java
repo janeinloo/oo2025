@@ -10,7 +10,7 @@ import java.util.List;
 
 //tehtud CategoryControlleri jne tunnimaterjali näitel
 @RestController
-public class AthleteController {
+public class    AthleteController {
     @Autowired
     AthleteRepository athleteRepository;
 
