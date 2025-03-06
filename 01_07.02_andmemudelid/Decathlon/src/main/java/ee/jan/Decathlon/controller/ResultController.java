@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 
+//teeb seosed/sõltuvused
 public class ResultController {
     @Autowired
     ResultRepository resultRepository;
@@ -26,11 +28,15 @@ public class ResultController {
         return decathlonService.calculatePoints(event, performance);
     }
 
+    //Kõikide tulemuste saamine
     @GetMapping("results")
     public List<Result> getResults() {
         return resultRepository.findAll();
     }
 
+    //Tulemuste sisestamiseks
+
+    //Erinevad errorid, kui midagi sisestamata.
     @PostMapping("results")
     public List<Result> addResult(@RequestBody Result result) {
         if (result.getEvent() == null || result.getEvent().isEmpty()) {
@@ -39,13 +45,14 @@ public class ResultController {
         if (result.getScore() <= 0){
             throw new RuntimeException("ERROR_SCORE_MUST_BE_POSITIVE");
         }
-        int points = calculatePoints(result.getEvent(), result.getScore());
+        int points = calculatePoints(result.getEvent(), result.getScore()); //Arvutab punktid
         if (points <= 0) {
             throw new IllegalArgumentException("ERROR_POINTS_MUST_BE_POSITIVE");
         }
         result.setPoints(points);
         resultRepository.save(result);
 
+        //Otsib sportlase
         Athlete athlete = athleteRepository.findById(result.getAthlete().getId()).orElse(null);
         if (athlete != null) {
             List<Result> athleteResults = resultRepository.findByAthleteId(athlete.getId());
@@ -55,6 +62,7 @@ public class ResultController {
                 totalPoints += athleteResult.getPoints();
             }
 
+            //Summeerib sportlase kõik punktid ja uuendab andmebaasi
             athlete.setTotalPoints(totalPoints);
             athleteRepository.save(athlete);
 
@@ -64,6 +72,7 @@ public class ResultController {
         }
     }
 
+    //Tulemuste editimiseks, aga läks katki
     @PutMapping("results")
     public List<Result> editResult(@RequestBody Result result) {
         if (result.getEvent() == null || result.getEvent().isEmpty()) {
@@ -79,6 +88,8 @@ public class ResultController {
         return resultRepository.findAll();
     }
 
+
+    //Tulemuste kustutamiseks
     @DeleteMapping("results/{id}")
     public List<Result> deleteResult(@PathVariable Long id) {
         resultRepository.deleteById(id);
