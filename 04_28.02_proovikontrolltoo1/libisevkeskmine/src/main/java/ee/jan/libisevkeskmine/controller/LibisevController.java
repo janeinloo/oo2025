@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
+//Lisada alla kommentaaridena juurde, mis nt need .stream jne tähendavad.
+
 @RestController
 public class LibisevController {
     @Autowired
