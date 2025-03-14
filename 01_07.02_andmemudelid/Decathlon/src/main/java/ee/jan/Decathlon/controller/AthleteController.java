@@ -35,21 +35,6 @@ public class    AthleteController {
         return athleteRepository.findAll();
     }
 
-    //Sportlase editimiseks
-    @PutMapping("athletes")
-    public List<Athlete> editAthlete(@RequestBody Athlete athlete) {
-        if (athlete.getName() == null || athlete.getName().isEmpty()) {
-            throw new RuntimeException("ERROR_NAME_MISSING");
-        }
-        if (athlete.getAge() == null){
-            throw new RuntimeException("ERROR_AGE_MISSING");
-        }
-        if (athlete.getCountry() == null || athlete.getCountry().isEmpty()) {
-            throw new RuntimeException("ERROR_COUNTRY_MISSING");
-        }
-        athleteRepository.save(athlete);
-        return athleteRepository.findAll();
-    }
 
     //Sportlase kustutamiseks
     @DeleteMapping("athletes/{id}")

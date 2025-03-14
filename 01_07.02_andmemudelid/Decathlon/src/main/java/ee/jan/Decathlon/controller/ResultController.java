@@ -72,23 +72,6 @@ public class ResultController {
         }
     }
 
-    //Tulemuste editimiseks, aga läks katki
-    @PutMapping("results")
-    public List<Result> editResult(@RequestBody Result result) {
-        if (result.getEvent() == null || result.getEvent().isEmpty()) {
-            throw new RuntimeException("ERROR_EVENT_MISSING");
-        }
-        if (result.getScore() <= 0){
-            throw new RuntimeException("ERROR_SCORE_MUST_BE_POSITIVE");
-        }
-        if (result.getPoints() <=0){
-            throw new RuntimeException("ERROR_POINTS_MUST_BE_POSITIVE");
-        }
-        resultRepository.save(result);
-        return resultRepository.findAll();
-    }
-
-
     //Tulemuste kustutamiseks
     @DeleteMapping("results/{id}")
     public List<Result> deleteResult(@PathVariable Long id) {
