@@ -19,7 +19,7 @@ function Athletes() {
     return (
         <div>
             <h2>Athletes</h2>
-            <table border="1">
+            <table>
                 <thead>
                     <tr>
                         <th>Name</th>

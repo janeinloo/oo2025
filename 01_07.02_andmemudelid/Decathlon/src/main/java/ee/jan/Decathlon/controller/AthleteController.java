@@ -3,8 +3,11 @@ package ee.jan.Decathlon.controller;
 import ee.jan.Decathlon.entity.Athlete;
 import ee.jan.Decathlon.repository.AthleteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -41,5 +44,31 @@ public class    AthleteController {
     public List<Athlete> deleteAthlete(@PathVariable Long id) {
         athleteRepository.deleteById(id);
         return athleteRepository.findAll();
+    }
+
+//    @GetMapping("/athlete-country")
+//    public List<Athlete> getAthleteByCountry(@RequestParam String country) {
+//        List<Athlete> athletes = athleteRepository.findAll();
+//        List<Athlete> filteredAthletes = new ArrayList<>();
+//
+//        for (Athlete athlete : athletes) {
+//            if (athlete.getCountry().equals(country)) {
+//                filteredAthletes.add(athlete);
+//            }
+//        }
+//        return filteredAthletes;
+//    }
+
+    @GetMapping("/athletes-country")
+    public Page<Athlete> getAthleteByCountry(@RequestParam(required = false) String country, Pageable pageable) {
+        if (country == null || country.isEmpty()) { //ei tea kas see õige
+            return athleteRepository.findAll(pageable);
+        }
+
+//        if (country.equals("all")) {
+//            return athleteRepository.findAll(pageable);
+//        }
+
+        return athleteRepository.findByCountry(country, pageable);
     }
 }

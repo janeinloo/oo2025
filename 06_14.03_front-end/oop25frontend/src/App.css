@@ -8,3 +8,16 @@
   width: 100vw;
   background-color: rgb(255, 255, 255);
 }
+
+table {
+  border: 1px solid black;
+  margin: auto; /* paneb automaatsed marginid. Kui on maaretletud height ja width, siis ta paneb tapselt keskele.
+  height ---> tapselt nii korge kui tabel
+  width ---> paneb tapselt keskele */
+  text-align: center;
+}
+
+table img {
+  width: 50px;
+  height: 50px;
+}

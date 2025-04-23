@@ -19,7 +19,7 @@ function Results() {
     return (
         <div>
             <h2>Results</h2>
-            <table border="1">
+            <table>
                 <thead>
                     <tr>
                         <th>Athlete</th>

@@ -5,3 +5,9 @@
   text-align: center;
   width: 100vw;
 }
+
+table {
+  border: 1px solid black;
+  margin: auto;
+  text-align: center;
+}
