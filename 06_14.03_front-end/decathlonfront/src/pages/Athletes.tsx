@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Athlete } from "../models/Athletes";
+import { ToastContainer, toast } from 'react-toastify';
 
 function Athletes() {
 
@@ -16,9 +17,47 @@ function Athletes() {
             .then(() => setAthletes(athletes.filter(athlete => athlete.id !== id)));
     };
 
+    const nameRef = useRef<HTMLInputElement>(null);
+    const countryRef = useRef<HTMLInputElement>(null);
+    const ageRef = useRef<HTMLInputElement>(null);
+    const totalPointsRef = useRef<HTMLInputElement>(null);
+
+    const addAthlete = () => {
+        const newAthlete = {
+            name: nameRef.current?.value,
+            country: countryRef.current?.value,
+            age: Number(ageRef.current?.value),
+            totalPoints: Number(totalPointsRef.current?.value)
+        };
+        fetch(`http://localhost:8080/athletes`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newAthlete)
+        })
+        .then(res => res.json())
+        .then(json => {
+            if (json.message === undefined && json.timestamp === undefined && json. status === undefined) {
+                setAthletes(json)
+                toast.success("Athlete added successfully!");
+                } else {
+                    toast.error(json.message);
+                }
+        });
+    };
+
+
     return (
         <div>
             <h2>Athletes</h2>
+            <label>Name</label> <br />
+            <input ref={nameRef} type="text"/> <br />
+            <label>Country</label> <br />
+            <input ref={countryRef} type="text"/> <br />
+            <label>Age</label> <br />
+            <input ref={ageRef} type="text"/> <br />
+            <label>Total points</label> <br />
+            <input ref={totalPointsRef} type="number"/> <br />
+            <button onClick={() => addAthlete()}>Add athlete</button>
             <table>
                 <thead>
                     <tr>
@@ -43,6 +82,7 @@ function Athletes() {
                     ))}
                 </tbody>
             </table>
+            <ToastContainer />
         </div>
     );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Athlete } from "../models/Athletes";
 import { Result } from "../models/Results";
 
@@ -8,7 +8,8 @@ function MainPage() {
     const [athletes, setAthletes] = useState<Athlete[]>([]);
     const [results, setResults] = useState<Result[]>([]);
     const [totalAthletes, setTotalAthletes] = useState(0);
-    const countriesByPage = 1;
+    const [totalPages, setTotalPages] = useState(0);
+    const [countriesByPage, setCountriesByPage] = useState(1);
     const [page, setPage] = useState(0);
     const [activeCountry, setActiveCountry] = useState("");
     const [countries, setCountries] = useState<string[]>([]);
@@ -20,12 +21,8 @@ function MainPage() {
             .then(res=>res.json())
             .then((json: Athlete[])=> setCountries([...new Set(json.map((a: Athlete) => a.country))]))
     }, []);
-    
-    useEffect(() => {
-        showByCountry("", 0);
-    }, []);
 
-  function showByCountry(athleteCountry: string, currentPage: number) {
+  const showByCountry = useCallback((athleteCountry: string, currentPage: number) => {
     setActiveCountry(athleteCountry);
     setPage(currentPage);
     fetch("http://localhost:8080/athletes-country?country=" + athleteCountry + "&size=" + countriesByPage + "&page=" + currentPage)
@@ -33,16 +30,29 @@ function MainPage() {
             .then(json=> {
               setAthletes(json.content)
               setTotalAthletes(json.totalElements);
-            }) //Kui on riik stringiga sportlase all, mis siis siia panna, et muutuks? Kui ei hakka tööle ilusti ss küsin homme, aga teen nii palju ära kui oskan/saan.
-  }
+              setTotalPages(json.totalPages);
+            })
+  }, [countriesByPage])
+
+  useEffect(() => {
+    showByCountry("", 0);
+}, [showByCountry]);
 
   function updatePage(newPage: number) {
     showByCountry(activeCountry, newPage);
   }
 
+  const countriesByPageRef = useRef<HTMLSelectElement>(null);
+
   // kas tundub yldsegi oige? showByCountry("")}
   return (
     <div>
+        <select ref={countriesByPageRef} 
+                onChange={() => setCountriesByPage(Number(countriesByPageRef.current?.value))}>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+        </select>      
         <div>Sportlasi kokku: {totalAthletes}</div>
         <button onClick={() => showByCountry("", 0)}>All athletes</button>
         {countries.map(country => 
@@ -71,7 +81,7 @@ function MainPage() {
         </div> )}
         <button disabled={page === 0} onClick={() => updatePage(page - 1)}>Eelmine</button>
         <span>{page + 1}</span>
-        <button disabled={page === Math.ceil(totalAthletes/countriesByPage-1)} onClick={() => updatePage(page + 1)}>Järgmine</button>
+        <button disabled={page >= totalPages -1} onClick={() => updatePage(page +1)}>Järgmine</button>
     </div>
   )
 }
