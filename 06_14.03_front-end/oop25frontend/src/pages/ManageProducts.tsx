@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Product } from "../models/Products";
 import { Category } from "../models/Category";
 import { ToastContainer, toast } from 'react-toastify';
+import { Link } from "react-router-dom";
 
 function ManageProducts() {
 
@@ -76,7 +77,7 @@ function ManageProducts() {
       <label>Category</label> <br />
       {/* <input ref={categoryRef} type="number" /> <br /> */}
       <select ref={categoryRef}>
-        {categories.map(category => <option value={category.id}>{category.name}</option>)}
+        {categories.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
       </select>
       <br />
       <button onClick={() => addProduct()}>Add product</button>
@@ -103,6 +104,11 @@ function ManageProducts() {
               <td>{product.category?.name}</td>
               <td>
               <button onClick={() => deleteProduct(product.id)}>Delete</button>
+              </td>
+              <td>
+                <Link to={"/manage/edit-product/" + product.id}>
+                  <button>Edit</button>
+                </Link>
               </td>
             </tr>
           ))}

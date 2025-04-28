@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Athlete } from "../models/Athletes";
 import { Result } from "../models/Results";
+import { Link } from "react-router-dom";
 
 
 function MainPage() {
@@ -13,7 +14,8 @@ function MainPage() {
     const [page, setPage] = useState(0);
     const [activeCountry, setActiveCountry] = useState("");
     const [countries, setCountries] = useState<string[]>([]);
-
+    const [sort, setSort] = useState("name,asc");
+    const countriesByPageRef = useRef<HTMLSelectElement>(null);
 
 
     useEffect(() => {
@@ -25,28 +27,38 @@ function MainPage() {
   const showByCountry = useCallback((athleteCountry: string, currentPage: number) => {
     setActiveCountry(athleteCountry);
     setPage(currentPage);
-    fetch("http://localhost:8080/athletes-country?country=" + athleteCountry + "&size=" + countriesByPage + "&page=" + currentPage)
+    fetch("http://localhost:8080/athletes-country?country=" + athleteCountry + 
+      "&size=" + countriesByPage + 
+      "&page=" + currentPage + 
+      "&sort=" + sort
+    )
             .then(res=>res.json())
             .then(json=> {
               setAthletes(json.content)
               setTotalAthletes(json.totalElements);
               setTotalPages(json.totalPages);
             })
-  }, [countriesByPage])
+  }, [countriesByPage, sort])
 
   useEffect(() => {
-    showByCountry("", 0);
-}, [showByCountry]);
+    showByCountry(activeCountry, 0);
+}, [showByCountry, activeCountry]);
 
   function updatePage(newPage: number) {
     showByCountry(activeCountry, newPage);
   }
 
-  const countriesByPageRef = useRef<HTMLSelectElement>(null);
 
   // kas tundub yldsegi oige? showByCountry("")}
   return (
     <div>
+        <button onClick={() => setSort("name,asc")}>Sorteeri A-Z</button>
+        <button onClick={() => setSort("name,desc")}>Sorteeri Z-A</button>
+        <button onClick={() => setSort("age,asc")}>Sorteeri vanuse järgi kasvav</button>
+        <button onClick={() => setSort("age,desc")}>Sorteeri vanuse järgi kahanev</button>
+        <button onClick={() => setSort("totalPoints,asc")}>Sorteeri punktide järgi kasvav</button>
+        <button onClick={() => setSort("totalPoints,desc")}>Sorteeri punktide järgi kahanev</button>
+
         <select ref={countriesByPageRef} 
                 onChange={() => setCountriesByPage(Number(countriesByPageRef.current?.value))}>
           <option>1</option>
@@ -69,10 +81,13 @@ function MainPage() {
         <div>{athlete.country}</div>
         <div>{athlete.age}</div>
         <div>{athlete.totalPoints}</div>
+        <Link to={"/athlete/" + athlete.id}>
+          <button>Vaata sportlast</button>
+        </Link>
       </div>
     ))}
 
-      {results.map(result =>
+      {results.map(result => //see siin üleliigne hetkel, sest kui ma resultsi mainpage panin siis see nägi väga kole välja, jätsin selle eraldi results jaoks ainult aga kui kunagi tahta lisada siis olemas.
         <div key={result.id}>
           <div>{result.athlete.name}</div>
           <div>{result.event}</div>

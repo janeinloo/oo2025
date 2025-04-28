@@ -35,6 +35,11 @@ public class ResultController {
         return resultRepository.findAll();
     }
 
+    @GetMapping("results/{id}")
+    public Result getResult(@PathVariable Long id) {
+        return resultRepository.findById(id).orElseThrow();
+    }
+
     //Tulemuste sisestamiseks
 
     //Erinevad errorid, kui midagi sisestamata.

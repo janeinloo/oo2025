@@ -48,6 +48,9 @@ public class ProductController {
         if (product.getId() == null) {
         throw new IllegalArgumentException("ERROR_CANNOT_EDIT_WITHOUT_ID");
         }
+        if (product.getPrice() <= 0) {
+            throw new RuntimeException("ERROR_PRICE_MUST_BE_POSITIVE");
+        }
         productRepository.save(product);
         return productRepository.findAll();
     }
@@ -110,7 +113,8 @@ public class ProductController {
 //        }
 //        return filteredProducts;
 //    }
-    // http://localhost:8080/category-products?categoryId=1&page=0
+    // http://localhost:8080/category-products?categoryId=1&page=0&size=2&sort=name,asc
+    // http://localhost:8080/category-products?categoryId=1&page=0&size=2&sort=price,desc
     @GetMapping("/category-products")
     public Page<Product> getCategoryProducts(@RequestParam Long categoryId, Pageable pageable) {
         if (categoryId == -1) {

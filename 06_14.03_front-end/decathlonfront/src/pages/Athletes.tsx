@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Athlete } from "../models/Athletes";
 import { ToastContainer, toast } from 'react-toastify';
+import { Link } from "react-router-dom";
 
 function Athletes() {
 
@@ -77,6 +78,11 @@ function Athletes() {
                             <td>{athlete.totalPoints}</td>
                             <td>
                                 <button onClick={() => deleteAthlete(athlete.id)}>Delete</button>
+                            </td>
+                            <td>
+                                <Link to={"/edit-athlete/" + athlete.id}>
+                                <button>Edit</button>
+                                </Link>
                             </td>
                         </tr>
                     ))}

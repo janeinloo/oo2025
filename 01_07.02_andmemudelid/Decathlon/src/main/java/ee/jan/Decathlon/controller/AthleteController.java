@@ -38,6 +38,60 @@ public class    AthleteController {
         return athleteRepository.findAll();
     }
 
+    @GetMapping("athletes/{id}")
+    public Athlete getAthlete(@PathVariable Long id) {
+        return athleteRepository.findById(id).orElseThrow();
+    }
+
+    @PutMapping("athletes")
+    public List<Athlete> editAthlete(@RequestBody Athlete athlete) {
+        if (athlete.getId() == 0) {
+            throw new RuntimeException("ID must be provided for editing!");
+        }
+        Athlete existingAthlete = athleteRepository.findById(athlete.getId())
+                .orElseThrow(() -> new RuntimeException("Athlete not found!"));
+
+        // Muudame ainult need väljad, mis tulevad kaasa
+        existingAthlete.setName(athlete.getName());
+        existingAthlete.setCountry(athlete.getCountry());
+        existingAthlete.setAge(athlete.getAge());
+        existingAthlete.setTotalPoints(athlete.getTotalPoints());
+
+        athleteRepository.save(existingAthlete);
+        return athleteRepository.findAll();
+    }
+
+    @PatchMapping("athletes")
+    public List<Athlete> updateAthlete(@RequestParam Long id, String field, String value) {
+        if (id == null) {
+            throw new RuntimeException("ERROR_CANNOT_EDIT_WITHOUT_ID");
+        }
+        Athlete athlete = athleteRepository.findById(id).orElseThrow();
+
+        switch (field) {
+            case "name" -> athlete.setName(value);
+            case "country" -> athlete.setCountry(value);
+            case "age" -> {
+                int age = Integer.parseInt(value);
+                if (age <= 0) {
+                    throw new RuntimeException("ERROR_INVALID_AGE");
+                }
+                athlete.setAge(age);
+            }
+            case "totalPoints" -> {
+                int points = Integer.parseInt(value);
+                if (points < 0) {
+                    throw new RuntimeException("ERROR_INVALID_TOTAL_POINTS");
+                }
+                athlete.setTotalPoints(points);
+            }
+            default -> throw new RuntimeException("ERROR_UNKNOWN_FIELD");
+        }
+
+        athleteRepository.save(athlete);
+        return athleteRepository.findAll();
+    }
+
 
     //Sportlase kustutamiseks
     @DeleteMapping("athletes/{id}")
