@@ -17,7 +17,15 @@ table {
   text-align: center;
 }
 
+/* Punkti ette ei lahe, sest poordun otse elemendi poole */
 table img {
   width: 50px;
   height: 50px;
+}
+
+/* panen punkti ette, sest poordun className poole */
+.map {
+  height: 700px;
+  margin: 3%;
+  border-radius: 20px;
 }

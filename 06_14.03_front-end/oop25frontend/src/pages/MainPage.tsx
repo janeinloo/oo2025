@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Category } from '../models/Category';
 import { Product } from '../models/Products';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 // React Hook (Reacti erikood)
 // 1. peab importima
@@ -10,6 +11,7 @@ import { Link } from 'react-router-dom';
 // 4. ei tohi olla tingimuslikult loodud (if sees)
 // 5. ei tohi olla funktsioonide sees loodud
 function MainPage() {
+  const { t } = useTranslation();
 
     //Muutuja - HTML muudab muutujat + HTMLi sulgude sees - algv22rtus
   const [kategooriad, setKategooriad] = useState<Category[]>([]);
@@ -88,7 +90,7 @@ const showByCategory = useCallback((categoryId: number, currentPage: number) => 
           <option>2</option>
           <option>3</option>
         </select>
-        <button onClick={() => showByCategory(-1, 0)}>Kõik kategooriad</button>
+        <button onClick={() => showByCategory(-1, 0)}>{t("home.all-categories")}</button>
         {kategooriad.map(kategooria =>
         <button key={kategooria.id} onClick={() => showByCategory(kategooria.id, 0)}>
          {kategooria.name}
