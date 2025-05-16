@@ -1,0 +1,47 @@
+#root {
+  color: black;
+  /* max-width: 1280px; */
+  margin: 0 auto;
+  /* padding: 2rem; */
+  text-align: center;
+  /* width: 100%; 100% laiust, mille sees ta on 
+  vw on view width ehk ekraani (browseri) laius protsentides */
+  width: 100vw;
+  background-color: rgb(255, 255, 255);
+}
+
+table {
+  border: 1px solid black;
+  margin: auto; /* paneb automaatsed marginid. Kui on maaretletud height ja width, siis ta paneb tapselt keskele.
+  height ---> tapselt nii korge kui tabel
+  width ---> paneb tapselt keskele */
+  text-align: center;
+}
+
+/* Punkti ette ei lahe, sest poordun otse elemendi poole */
+table img {
+  width: 50px;
+  height: 50px;
+}
+
+/* panen punkti ette, sest poordun className poole */
+.map {
+  height: 700px;
+  margin: 3%;
+  border-radius: 20px;
+}
+
+.comment-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.comment-card {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
