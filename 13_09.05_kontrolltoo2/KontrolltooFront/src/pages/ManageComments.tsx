@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Comment } from "../models/Comment";
+import { Link } from "react-router-dom";
 
 function ManageComments() {
     
@@ -49,13 +50,17 @@ function ManageComments() {
         <button onClick={addComment}>Lisa kommentaar</button>
 
         <div className="comment-container">
-            {comments.map(comment => (
-                <div key={comment.id} className="comment-card">
-                    <h5>{comment.name} – <span className="text-muted">{comment.email}</span></h5>
-                    <p><strong>Post ID:</strong> {comment.postId}</p>
-                    <p>{comment.body}</p>
-                </div>
-            ))}
+        {comments.map(comment => (
+            <div key={comment.id} className="comment-card">
+            <h5>{comment.name} – <span className="text-muted">{comment.email}</span></h5>
+            <p><strong>Post ID:</strong> {comment.postId}</p>
+            <p>{comment.body}</p>
+
+            <Link to={`/comment/${comment.id}`}>
+                <button className="btn btn-primary btn-sm mt-2">Vaata</button>
+            </Link>
+            </div>
+        ))}
         </div>
     </div>
   );
