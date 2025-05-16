@@ -7,6 +7,7 @@ function Menu() {
       <NavDropdown.Item as={Link} to="/manage/comments">
         Halda Kommentaare
       </NavDropdown.Item>
+      <NavDropdown.Item as={Link} to="/users">Kasutajad</NavDropdown.Item>
     </div>
   )
 }

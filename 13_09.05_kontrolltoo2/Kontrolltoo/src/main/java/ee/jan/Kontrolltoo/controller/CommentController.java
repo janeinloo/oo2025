@@ -42,4 +42,9 @@ public class CommentController {
     public Comment getComment(@PathVariable Long id) {
         return commentRepository.findById(id).orElse(null);
     }
+
+    @GetMapping("comments-user")
+    public List<Comment> getCommentsByUser(@RequestParam Long userId) {
+        return commentRepository.findByUserId(userId);
+    }
 }
